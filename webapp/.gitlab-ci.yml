@@ -1,0 +1,6 @@
+.webapp-module:
+  variables:
+    MODULE: "webapp"
+  only:
+    changes:
+      - "webapp/**/*"

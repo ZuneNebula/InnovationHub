@@ -1,0 +1,179 @@
+<form
+  class="container"
+  *ngIf="isEditing"
+  [formGroup]="innovatorForm"
+  novalidate
+  (ngSubmit)="onSubmit()"
+>
+  <mat-card class="shipping-card">
+    <mat-card-header>
+      <mat-card-title (click)="test()"
+        >Edit {{ innovatorValue.firstName }}'s Profile</mat-card-title
+      >
+    </mat-card-header>
+
+    <mat-card-content class="mat-typography">
+      <mat-form-field class="full-width">
+        <mat-label for="username">Username</mat-label>
+        <input
+          matInput
+          type="text"
+          class="form-control"
+          id="username"
+          name="username"
+          formControlName="username"
+        />
+      </mat-form-field>
+      <div>
+        <h3>Avatar</h3>
+        <img
+          class="avatars"
+          mat-card-image
+          src="{{ innovatorValue.avatarUrl }}"
+        />
+      </div>
+      <mat-form-field class="full-width">
+        <mat-label for="avatarUrl">Avatar URL</mat-label>
+        <input
+          matInput
+          type="text"
+          class="form-control"
+          id="avatarUrl"
+          name="avatarUrl"
+          formControlName="avatarUrl"
+        />
+      </mat-form-field>
+      <mat-form-field class="full-width">
+        <mat-label for="firstname">First Name</mat-label>
+        <input
+          matInput
+          type="text"
+          class="form-control"
+          id="firstname"
+          name="firstname"
+          formControlName="firstName"
+        />
+        <mat-error
+          *ngIf="innovatorForm.controls['firstName'].hasError('required')"
+        >
+          First Name is <strong>required</strong>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field class="full-width">
+        <mat-label for="lastname">Last Name</mat-label>
+        <input
+          matInput
+          type="text"
+          class="form-control"
+          id="lastname"
+          name="lastname"
+          formControlName="lastName"
+        />
+        <mat-error
+          *ngIf="innovatorForm.controls['lastName'].hasError('required')"
+        >
+          Last Name is <strong>required</strong>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field class="full-width">
+        <mat-label for="email">Email</mat-label>
+        <input
+          matInput
+          type="email"
+          class="form-control"
+          id="email"
+          name="email"
+          formControlName="email"
+        />
+      </mat-form-field>
+      <mat-form-field class="full-width">
+        <mat-label for="occupation">Occupation</mat-label>
+        <input
+          matInput
+          type="text"
+          class="form-control"
+          id="occupation"
+          name="occupation"
+          formControlName="occupation"
+        />
+      </mat-form-field>
+      <mat-form-field class="full-width">
+        <mat-label>Tags</mat-label>
+        <mat-chip-list #chipList2>
+          <mat-chip *ngFor="let tag of innovatorValue.tags; let j=index;" (removed)="removeTag(j)">
+            {{tag}}
+            <button matChipRemove>
+              <mat-icon>cancel</mat-icon>
+            </button>
+          </mat-chip>
+          <input placeholder="New tag..."
+                 [matChipInputFor]="chipList2"
+                 [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                 [matChipInputAddOnBlur]="addOnBlur"
+                 (matChipInputTokenEnd)="add($event)">
+        </mat-chip-list>
+      </mat-form-field>
+    </mat-card-content>
+
+    <mat-card-actions>
+      <button mat-raised-button color="primary" type="submit">Submit</button>
+      <button mat-stroked-button type="button" (click)="cancel()">
+        Cancel
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</form>
+
+<div *ngIf="!isEditing" class="container">
+  <mat-card class="shipping-card">
+    <mat-card-header>
+      <mat-card-title (click)="test()"
+        >View {{ innovatorValue.firstName }}'s Profile</mat-card-title
+      >
+    </mat-card-header>
+
+    <mat-card-content class="mat-typography">
+      <div class="avatar-box">
+        <img
+        class="avatars-view"
+        mat-card-image
+        src="{{ innovatorValue.avatarUrl }}"
+      />
+      </div>
+      
+      <div class="layout">
+        <div class="box1">
+          <h1>User Details</h1>
+          <hr>
+          <h2><mat-icon>account_circle</mat-icon><span><h3>: {{ innovatorValue.firstName }} {{innovatorValue.lastName}}</h3></span></h2>
+          
+          <h2><mat-icon>email</mat-icon><span><h3>: {{innovatorValue.email}}</h3></span></h2>
+         
+        </div>
+        <div class="box2">
+          <h1>Professional Details</h1>
+          <hr>
+          <h2 *ngIf="innovatorValue.occupation">Occupation : <span>
+            <h3>{{innovatorValue.occupation}}</h3>
+          </span>
+          </h2>
+          <h2 *ngIf="innovatorValue.tags?.length">Tags</h2>
+          <mat-chip-list #chipList >
+            <mat-chip *ngFor="let tag of innovatorValue.tags">
+              {{tag}}
+            </mat-chip>
+          </mat-chip-list>
+        </div>
+      </div>
+    </mat-card-content>
+
+    <mat-card-actions>
+      <button mat-raised-button type="button" color="primary" (click)="edit()">
+        Edit Profile
+      </button>
+      <button mat-raised-button type="button" (click)="close()">
+        Close
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</div>

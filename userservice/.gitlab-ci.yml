@@ -1,0 +1,6 @@
+.userservice-module:
+  variables:
+    MODULE: "userservice"
+  only:
+    changes:
+      - "userservice/**/*"

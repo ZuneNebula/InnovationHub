@@ -1,0 +1,6 @@
+.discovery-module:
+  variables:
+    MODULE: "discovery"
+  only:
+    changes:
+      - "discovery/**/*"

@@ -1,0 +1,112 @@
+<div id="main">
+  <h2 *ngIf="!id" style="margin-left: 20%;">Add your new Innovation</h2>
+  <h2 *ngIf="id" style="margin-left: 20%;">Update your Innovation</h2>
+  <div style="margin-left: 20%;margin-right: 20%;" id="main2">
+  <form [formGroup]="newInnovation" novalidate (ngSubmit)="onSubmit()">
+    <mat-card class="newInnovation-card">
+      <mat-card-header>
+        <mat-card-title></mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="row">
+          <div class="col">
+            <mat-form-field class="full-width">
+              <input matInput placeholder="Innovation Name" formControlName="innovationName">
+              <mat-error *ngIf="newInnovation.controls['innovationName'].hasError('required')">
+                Innovation Name is <strong>required</strong>
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <mat-form-field class="full-width">
+              <textarea matInput placeholder="Description" formControlName="innovationDesc"></textarea>
+              <mat-error *ngIf="newInnovation.controls['innovationDesc'].hasError('required')">
+                Description is <strong>required</strong>
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="row" fxLayout="row wrap">
+          <div class="col">
+            <mat-form-field class="full-width">
+              <mat-select placeholder="Domain" formControlName="domain">
+                <mat-option *ngFor="let domain of domains" [value]="domain.name">
+                  {{ domain.name }}
+                </mat-option>
+              </mat-select>
+              <mat-error *ngIf="newInnovation.controls['domain'].hasError('required')">
+                Domain is <strong>required</strong>
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col" style="margin-top: px;margin-bottom: 15px;">
+            <label for="">Cover Image :<input #inputFile type="file" (change)="onChange($event)" formControlName="imageFiles"></label>
+          </div>
+          <div class="col">
+            <mat-chip-list #chipLists aria-label="Fruit selection">
+              <mat-chip (removed)="removeCoverImage()" *ngIf="newInnovationValue.coverPhoto.fileName">
+                {{newInnovationValue.coverPhoto.fileName}}<mat-icon>image</mat-icon>
+                <button matChipRemove>
+                  <mat-icon>cancel</mat-icon>
+                </button>
+              </mat-chip>
+            </mat-chip-list>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <mat-form-field class="full-width">
+              <input matInput placeholder="Challenges" formControlName="challenges">
+              <mat-error *ngIf="newInnovation.controls['challenges'].hasError('required')">
+                Challenges is <strong>required</strong>
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+        
+        <div class="row">
+          <div class="col">
+            <mat-form-field class="full-width">
+              <input matInput placeholder="Stage" formControlName="status">
+              <mat-error *ngIf="newInnovation.controls['status'].hasError('required')">
+                Status is <strong>required</strong>
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+        
+        <div fxLayout="row wrap">
+          <div class="col">
+            <mat-form-field class="full-width">
+              <input matInput placeholder="Artifacts" formControlName="fileTitle">
+            </mat-form-field>
+          </div>
+          
+          <div class="col">
+              <input mat-button #inputFile style="margin-top: 15px;" type="file" (change)="onChanges($event)" formControlName="docFiles">
+              <button mat-button (click)="reset()" type="button">+ Add file<mat-icon>attach_file</mat-icon></button>
+          </div>
+        </div>
+        
+        <mat-chip-list #chipList>
+          <mat-chip *ngFor="let file of tempFileArray;let i=index" (removed)="remove(i)">
+            {{file.fileName}}<mat-icon>attach_file</mat-icon>
+            <button matChipRemove>
+              <mat-icon>cancel</mat-icon>
+            </button>
+          </mat-chip>
+        </mat-chip-list>
+        
+        
+        
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-stroked-button type="reset" (click)="cancelForm()">Cancel</button>
+        <button mat-raised-button color="primary" type="submit">Submit</button>
+      </mat-card-actions>
+    </mat-card>
+  </form>
+  </div>
+</div>

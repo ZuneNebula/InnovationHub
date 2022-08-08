@@ -1,0 +1,96 @@
+<mat-sidenav-container class="sidenav-container">
+  <!-- <mat-sidenav #drawer class="sidenav" fixedInViewport
+      [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+      [mode]="(isHandset$ | async) ? 'over' : 'side'"
+      [opened]="(isHandset$ | async) === false">
+    <mat-toolbar>Menu</mat-toolbar>
+    <mat-nav-list>
+      <a mat-list-item href="#">Link 1</a>
+      <a mat-list-item href="#">Link 2</a>
+      <a mat-list-item href="#">Link 3</a>
+    </mat-nav-list>
+  </mat-sidenav> -->
+  <mat-sidenav-content>
+    <mat-toolbar color="primary">
+      <!-- <button
+        type="button"
+        aria-label="Toggle sidenav"
+        mat-icon-button
+        (click)="drawer.toggle()"
+        *ngIf="isHandset$ | async">
+        <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+      </button> -->
+      <span style="font-family: Calligraffitti">InnovationHub</span>
+      <span class="fill-space"></span>
+
+      <span *ngIf="!isInnovator && !isExpert" style="margin-right: 0.5cm"
+        >Sign in as
+      </span>
+      <button
+        *ngIf="!isInnovator && !isExpert"
+        mat-raised-button
+        color="primary"
+        style="margin-right: 0.7cm"
+        onclick="window.location.href='/userservice/api/v1/authorize/innovator/googlelogin';"
+      >
+      Innovator
+      </button>
+      <button
+        *ngIf="!isInnovator && !isExpert"
+        mat-raised-button
+        color="accent"
+        onClick="window.location.href='/userservice/api/v1/authorize/expert/googlelogin';"
+      >
+      Expert
+      </button>
+
+      <button
+        *ngIf="isInnovator && !isExpert"
+        mat-raised-button
+        color="primary"
+        style="margin-right: 0.7cm"
+        routerLink="/innovators"
+      >
+        Innovator View
+      </button>
+      <button
+        *ngIf="!isInnovator && isExpert"
+        mat-raised-button
+        color="accent"
+        routerLink="/experts"
+      >
+        Expert View
+      </button>
+    </mat-toolbar>
+    <!-- Add Content Here -->
+    <div id="background" class="container">
+      <div class="content-section">
+        <h2>Innovation Hub</h2>
+        <carousel
+          [images]="images"
+          [height]="500"
+          [loop]="true"
+          [cellWidth]="600"
+          [cellsToShow]="2"
+        ></carousel>
+      </div>
+      <div class="content-section">
+        <h2>About Us</h2>
+        <p>
+          The world is facing a mammoth number of challenges, be it related to
+          environment, power and energy, health, technology, society, and so on.
+          So how can such challenges be tackled? One problem is that there are a
+          large number of Innovators across the globe inside, with great
+          projects running through their minds but doesn’t find right set of
+          experts to collaborate with. The other problem there are many experts
+          working in domains, but requires innovative ideas, talent and
+          solutions from all over the world to provide their insight on.
+        </p>
+      </div>
+    </div>
+    <div class="footer">
+      <p>InnovationHub</p>
+      <p>Copyright 2021</p>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>

@@ -1,0 +1,70 @@
+.sidenav-container {
+  height: 100%;
+}
+
+.sidenav {
+  width: 200px;
+}
+
+.sidenav .mat-toolbar {
+  background: inherit;
+}
+
+.mat-toolbar.mat-primary {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+/* .mat-toolbar.mat-primary {
+  background: #1c0f8d;
+  color: #fff;
+} */
+.fill-space {
+  flex: 1 1 auto;
+}
+a{
+  text-decoration: none;
+  color: rgb(245, 240, 240);
+}
+.mat-toolbar{
+  background-repeat: no-repeat, repeat;
+  background-image: linear-gradient(to right,rgb(40, 15, 110) 0%, rgb(221, 130, 45) 100%);
+  background-blend-mode: normal;
+}
+
+#background {
+  color: white; 
+  background-image: url("/assets/innovation.png");
+  background-size: 100% cover;
+}
+
+.content-section{
+  background-color: black;
+  font-size: 1.5em;
+  margin:0% 10%;
+  padding: 3% 5%;
+  opacity: 80%;
+}
+
+
+.footer{
+  text-align: center;
+  flex: auto;
+  background-color: black;
+  color: white;
+  padding: 3%;
+}
+
+.example-card {
+  max-width: 400px;
+}
+
+.example-header-image {
+  background-image: url('https://material.angular.io/assets/img/examples/shiba1.jpg');
+  background-size: cover; 
+}
+
+mat-grid-list{
+  align-content: center;
+}

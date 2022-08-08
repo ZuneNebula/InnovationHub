@@ -1,0 +1,60 @@
+.green{
+  background-color: thistle;
+}
+
+.red{
+  background-color: rgb(253, 239, 253);
+}
+
+.blue{
+  background-color: thistle;
+}
+
+.orange{
+  background-color: rgb(253, 239, 253);
+}
+
+.comments-form {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  background-color: white;
+  margin-left: 10%;
+}
+
+.example-full-width {
+  width: 100%;
+}
+
+.container{
+  height: 300px;
+}
+
+.number{
+  margin-left: 5px;
+}
+
+/* .close{
+  justify-content:flex-end;
+      display: flex;
+} */
+
+::ng-deep.mat-tab-label, ::ng-deep.mat-tab-label-active{
+  width: 33% !important;
+} 
+
+#image img{
+  float: right;
+  width: 35%;
+  margin-right: 0px ;
+  border-radius: 10px;
+  margin-top: 1px;
+  height: 25%;
+}
+#image{
+  padding-top: 30px;
+}
+div .proposals{
+  overflow-y: scroll;
+}
+

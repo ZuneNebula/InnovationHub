@@ -1,0 +1,6 @@
+.apigateway-module:
+  variables:
+    MODULE: "apigateway"
+  only:
+    changes:
+      - "apigateway/**/*"

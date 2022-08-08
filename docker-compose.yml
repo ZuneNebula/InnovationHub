@@ -1,0 +1,150 @@
+version: "3.8"
+services:
+  configserver:
+    image: configserver
+    build: configserver/
+    restart: always
+    env_file:
+      - ./dockerenv/development/configservice.env
+    ports:
+      - 8888:8888
+  discovery:
+    image: discovery
+    build: discovery/
+    restart: always
+    env_file:
+      - ./dockerenv/development/discovery.env
+    volumes:
+      - ./scripts:/temp/scripts
+    entrypoint:
+      - /temp/scripts/wait_for_service.sh
+      - java -jar /usr/src/discovery.jar
+    ports:
+      - 9091:9091
+#    depends-on:
+#      - configserver
+  apigateway:
+    image: apigateway
+    build: apigateway/
+    restart: always
+    env_file:
+      - ./dockerenv/development/apigateway.env
+    volumes:
+      - ./scripts:/temp/scripts
+    entrypoint:
+      - /temp/scripts/wait_for_service.sh
+      - java -jar /usr/src/apigateway.jar
+    ports:
+      - 9000:9000
+#    depends-on:
+#      - configserver
+#      - discovery
+
+  #change volume name in windows
+  mongodbservice:
+    image: mongo:5.0.3
+    container_name: mongo-container
+    restart: always
+    hostname: localhost
+    ports:
+      - 27017:27017
+    volumes:
+      - $HOME/mongo-data:/data/db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root123
+      MONGO_INITDB_DATABASE: innovationhub
+
+  innovation:
+    image: innovation
+    build: innovationmanagement/
+    restart: always
+    env_file:
+      - ./dockerenv/development/innovation.env
+    volumes:
+      - ./scripts:/temp/scripts
+    entrypoint:
+      - /temp/scripts/wait_for_service.sh
+      - java -jar /usr/src/innovationmanagement.jar
+    ports:
+      - 8085:8085
+
+#    depends-on:
+#      - configserver
+#      - mongodbservice
+#      - discovery
+
+
+  userservice:
+    image: userservice
+    build: userservice/
+    restart: always
+    env_file:
+      - ./dockerenv/development/userservice.env
+    volumes:
+      - ./scripts:/temp/scripts
+    entrypoint:
+      - /temp/scripts/wait_for_service.sh
+      - java -jar /usr/src/userservice.jar
+    ports:
+      - 8080:8080
+#    depends-on:
+#      - configserver
+#      - mongodbservice
+#      - discovery
+  notificationservice:
+    image: notificationservice
+    build: notificationservice/
+    restart: always
+    env_file:
+      - ./dockerenv/development/notificationservice.env
+    volumes:
+      - ./scripts:/temp/scripts
+    entrypoint:
+      - /temp/scripts/wait_for_service.sh
+      - java -jar /usr/src/notificationservice.jar
+    ports:
+      - 8087:8087
+
+  webapp:
+    image: webapp
+    build: webapp/
+    restart: always
+    env_file:
+      - ./dockerenv/development/webapp.env
+    volumes:
+      - ./scripts:/temp/scripts
+    entrypoint:
+      - /temp/scripts/wait_for_service.sh
+      - java -jar /usr/src/webapp.jar
+    ports:
+      - 4200:4200
+#    depends-on:
+#      - configserver
+#      - discovery
+  rabbitmq:
+    image: rabbitmq:management
+    restart: always
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: "root"
+      RABBITMQ_DEFAULT_PASS: "root123"
+
+  portainer:
+    image: portainer/portainer-ce:2.9.2-alpine
+    restart: always
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - $HOME/portainer_latest_data:/data
+    ports:
+      - 9080:9000
+    deploy:
+      placement:
+        constraints: [ node.role == manager ]
+
+##commented for ubuntu
+#volumes:
+#  mongo-data:
+#    driver: local

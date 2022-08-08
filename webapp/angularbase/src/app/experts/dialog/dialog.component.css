@@ -1,0 +1,44 @@
+.green {
+    background-color: green;
+}
+
+.red {
+    background-color: red;
+}
+
+h2{
+    color: rgb(75, 75, 75);
+}
+
+.main{
+    margin-left: 20%;
+    margin-right: 20%;
+    margin-top: 1%;
+    margin-bottom: 5%;
+}
+.cover-image{
+    float: right;
+    margin-top: -8%;
+    padding-right: 0%;
+    padding-top: 20px;
+}
+.comments-section {
+    padding-left: 1%;
+    padding-right: 1%;
+}
+.actions{
+    justify-content: flex-end;
+    display: flex;
+}
+.inner{
+    /* margin-left: 0.5%; */
+    width: 95%;
+}
+
+.container{
+    height: 330px;
+}
+
+.number{
+height: 72;
+}

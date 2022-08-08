@@ -1,0 +1,36 @@
+.green{
+    background-color: thistle;
+}
+
+.red{
+    background-color: rgb(253, 239, 253);
+}
+
+.blue{
+    background-color: thistle;
+}
+
+.orange{
+    background-color: rgb(253, 239, 253);
+}
+
+.example-form {
+    min-width: 150px;
+    max-width: 400px;
+    width: 100%;
+  }
+  
+  .example-full-width {
+    width: 100%;
+  }
+
+  .container{
+    height: 236px;
+  }
+
+  .number{
+    height: 72px;
+  }
+
+
+  

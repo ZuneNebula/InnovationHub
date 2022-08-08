@@ -1,0 +1,90 @@
+<h2 style="margin-left: 20%;margin-top: 15px;float: left;font-weight: 500;">My Innovations</h2>
+  <div class="searchbar">
+    <mat-form-field appearance="outline" class="searchbar">
+      <mat-label>Search</mat-label>
+      <input matInput [(ngModel)]="search_text" (ngModelChange)="search()">
+      <mat-icon matSuffix>search</mat-icon>
+    </mat-form-field>
+      <!-- <button mat-button [matMenuTriggerFor]="domain" matTooltip="Filter"><mat-icon aria-hidden="false" aria-label="Example home icon">filter_list</mat-icon></button>
+      <button mat-button *ngIf="!setRecentFilter" (click)="clearFilters()">Clear Filters</button> -->
+      <mat-menu #filter="matMenu">
+        <button mat-menu-item [matMenuTriggerFor]="domain">Domain</button>
+        <button mat-menu-item (click)="recentFilter()">Recent</button>
+      </mat-menu>
+      <button mat-button (click)="displayAllInnovations()"><mat-icon>refresh</mat-icon></button>
+      <mat-menu #domain="matMenu" >
+        <div *ngFor = "let s of statuss">
+          <button mat-menu-item (click)="statusFilter(s.name)">{{s.name}}</button>
+        </div>
+      </mat-menu>
+  </div>
+  
+  <hr style="width: 67%;float: left;margin-left: 15%;height: 3px;background-color: rgb(253, 49, 151);border: none;margin-top: 0;">
+
+  
+
+  <div style="margin-left:17%;margin-top: 1%;">
+  
+    <mat-chip-list fxLayout="row-wrap" style="float: left;margin-left: 2%;" *ngFor="let one of specializaion">
+      <mat-chip  #chip="matChip" (click)="displayInnovationsOfThisSpecialization(one)" style="background-color: rgb(247, 214, 255);" [selectable]="true">{{one}}</mat-chip>
+    </mat-chip-list>
+    
+  </div>
+  <h3 fxLayout="row-wrap" style="float: right;margin-right: 20%;">Displaying {{innovations.length}} results out of {{innovationsCount}}</h3>
+  <br><br>
+
+  <mat-spinner style="margin-left: 50%" *ngIf="!wait">
+  </mat-spinner>
+
+<div id="main" *ngIf="wait">
+    <div fxLayout="row wrap" fxLayoutGap="16px grid">
+      <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="50%" fxFlex.lg="33%" *ngFor="let innovation of innovations;let i = index">
+          <mat-card class="example-card background primary" style="height: 9cm;" >
+              <mat-card-content>
+                <div id="image">
+                  <img *ngIf="innovation.coverPhoto.content" mat-card-image mat-card-image src={{innovation.coverPhoto.content}} alt="Innovation cover photo">
+
+                  <img *ngIf="!innovation.coverPhoto.content" style="float: right;width: 130px;margin-right: 0px ;border-radius: 10px;margin-top: 45px;height: 90px;" mat-card-image mat-card-image 
+                    src="assets/default_image.jpg" alt="Innovation cover photo">
+                    
+                  <h2 id="innovationName">{{ innovation.innovationName }}</h2>
+                  
+                  <div class="metadata" style="margin-top: 50px;position: absolute;">
+                    <span  style="color: rgb(3, 3, 3);padding-top: 10px;"><b>{{innovation.domain}}</b></span><br>
+                    <span > Updated {{innovation.dateOfCreation | dateAgoExpert}}</span>  <br>
+                    <span>{{ innovation.comments.length}} comments</span> <br>
+                    <span> {{ innovation.uploadedFiles.length }} files uploaded</span>  <br>
+                    
+                  </div>
+                  <div style="margin-top: 140px;position: absolute;">
+                    <p >
+                      {{innovation.innovationDesc}}
+                    </p>
+                  </div>           
+                </div>
+              </mat-card-content>
+              <mat-card-actions>
+
+                <button style="margin-right: 55%;"  matTooltip="innovation details" mat-button id="delete" (click)="openInnovation(innovation.innovationId)">  
+                  <mat-icon>visibility</mat-icon></button>
+
+                <button matTooltip="send proposal" mat-button (click)="openForm(innovation.innovationId)"><mat-icon style="color: black;float: right;">library_add</mat-icon></button>
+              </mat-card-actions>
+          </mat-card>
+      </div>
+    </div>
+</div>
+<div class="pagination">
+  <div *ngIf="page < totalPages-1 && innovations.length > 0" id="add-more">
+    <button mat-stroked-button color="primary" (click)="addMore()">Show more<mat-icon>expand_more</mat-icon></button>
+  </div>
+  <div *ngIf="page == totalPages-1" id="folks">
+    <!-- <h2>That's all you have</h2> -->
+  </div>
+  <div *ngIf="innovations.length==0 && page < totalPages-1" id="folks">
+    <h2>No Innovation found</h2>
+  </div>
+  <!-- <div *ngIf="innovations.length==0">
+    <h2>No Innovation found</h2>
+  </div> -->
+</div>

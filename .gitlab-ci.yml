@@ -1,0 +1,171 @@
+image: maven:3.6.0-jdk-11
+
+stages:
+  - build
+  - lint
+  - test
+  - deploy
+
+variables:
+  MAVEN_OPTS: "-Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository"
+  MAVEN_CLI_OPTS: "--batch-mode --errors --fail-at-end --show-version"
+  CACHE_KEY: $CI_COMMIT_REF_SLUG
+  DEPLOY_BRANCH: $CI_COMMIT_REF_NAME
+
+
+#cache:
+#  key: $CACHE_KEY
+#  paths:
+#    - .m2/repository
+#    - .sbt
+
+include:
+  - local: apigateway/.gitlab-ci.yml
+  - local: configserver/.gitlab-ci.yml
+  - local: discovery/.gitlab-ci.yml
+  - local: innovationmanagement/.gitlab-ci.yml
+  - local: userservice/.gitlab-ci.yml
+  - local: webapp/.gitlab-ci.yml
+
+.build-module:
+  stage: build
+  script:
+    - echo "Building $MODULE"
+    - mvn -pl $MODULE clean compile --also-make
+  artifacts:
+    expire_in: 10 min
+    paths:
+      - "*/target"
+# #Java pmd
+.lint-module:
+  stage: lint
+  when: always
+  script:
+    - echo "Linting $MODULE"
+    - mvn -pl $MODULE pmd:check -X
+  artifacts:
+    expire_in: 10 min
+    paths:
+      - "*/target"
+#  only:
+#    - /^release_*/
+
+.test-module:
+  stage: test
+  script:
+    - echo "Testing $MODULE"
+    - mvn $MAVEN_CLI_OPTS -pl $MODULE test --also-make
+
+
+# BUILD JOBS
+#build-apigateway-module:
+#  extends:
+#    - .apigateway-module
+#    - .build-module
+#
+#build-configserver-module:
+#  extends:
+#    - .configserver-module
+#    - .build-module
+#
+#build-discovery-module:
+#  extends:
+#    - .discovery-module
+#    - .build-module
+#
+#build-innovationmanagement-module:
+#  extends:
+#    - .innovationmanagement-module
+#    - .build-module
+#
+#build-userservice-module:
+#  extends:
+#    - .userservice-module
+#    - .build-module
+#
+#build-webapp-module:
+#  extends:
+#    - .webapp-module
+#    - .build-module
+#
+## Lint JOBS
+#lint-apigateway-module:
+#  extends:
+#    - .apigateway-module
+#    - .lint-module
+#
+#lint-configserver-module:
+#  extends:
+#    - .configserver-module
+#    - .lint-module
+#
+#lint-discovery-module:
+#  extends:
+#    - .discovery-module
+#    - .lint-module
+#
+#lint-userservice-module:
+#  extends:
+#    - .userservice-module
+#    - .lint-module
+#
+#lint-innovationmanagement-module:
+#  extends:
+#    - .innovationmanagement-module
+#    - .lint-module
+#
+#lint-webapp-module:
+#  extends:
+#    - .webapp-module
+#    - .lint-module
+#
+#
+## TEST JOBS
+#test-apigateway-module:
+#  extends:
+#    - .apigateway-module
+#    - .test-module
+#
+#test-configserver-module:
+#  extends:
+#    - .configserver-module
+#    - .test-module
+#
+#test-discovery-module:
+#  extends:
+#    - .discovery-module
+#    - .test-module
+#
+#test-userservice-module:
+#  extends:
+#    - .userservice-module
+#    - .test-module
+#
+#test-innovationmanagement-module:
+#  extends:
+#    - .innovationmanagement-module
+#    - .test-module
+#
+#test-webapp-module:
+#  extends:
+#    - .webapp-module
+#    - .test-module
+
+
+
+release_deploy:
+  image: ubuntu:latest
+  stage: deploy
+  before_script:
+    - mkdir -p ~/.ssh
+    - echo -e "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+    - chmod 600 ~/.ssh/id_rsa
+    - 'echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+  script:
+    - ls -ltr
+    - /bin/sh .gitlab-deploy.sh
+  environment:
+    name: release
+  when: always
+  only:
+    - /^release_*/

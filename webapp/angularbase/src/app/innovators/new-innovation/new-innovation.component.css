@@ -1,0 +1,43 @@
+.full-width {
+  width: 100%;
+}
+
+.newInnovation-card {
+  min-width: 120px;
+  margin: 20px auto;
+  width: 100%;
+}
+
+.mat-radio-button {
+  display: block;
+  margin: 5px 0;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+}
+
+.col {
+  flex: 1;
+  margin-right: 20px;
+}
+
+.col:last-child {
+  margin-right: 0;
+}
+
+.mat-chip{
+  background-color: rgb(120, 194, 120);
+}
+
+/* #main{
+   background-size: 100%;
+  background-image: url("/assets/new_Innovation.jpg");
+  background-repeat: no-repeat;
+  background-size: 100% cover;
+} */
+mat-card-actions{
+  justify-content:flex-end;
+  display: flex;
+}

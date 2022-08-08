@@ -1,0 +1,6 @@
+.innovationmanagement-module:
+  variables:
+    MODULE: "innovationmanagement"
+  only:
+    changes:
+      - "innovationmanagement/**/*"

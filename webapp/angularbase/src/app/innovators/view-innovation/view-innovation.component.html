@@ -1,0 +1,95 @@
+    <mat-dialog-content class="mat-typography">
+        <div class="dialog-view" >
+            <mat-tab-group animationDuration="0ms" >
+                <mat-tab label="Details">
+                    <div class="dialog-view">
+                        <div id="image" style="padding-left: 5%;padding-right: 5%;">
+                            <img *ngIf="innovation.coverPhoto.content" mat-card-image
+                                src={{innovation.coverPhoto.content}} alt="Innovation cover photo">
+                            <img *ngIf="!innovation.coverPhoto.content" style="float: right;width: 130px;margin-right: 0px ;border-radius: 10px;margin-top: 45px;height: 90px;" mat-card-image mat-card-image 
+                                src="assets/default_image.jpg" alt="Innovation cover photo">
+                            <h2 id="innovationName" >{{ innovation.innovationName }}</h2>
+                            <div class="metadata" style="margin-top: 5px;position: absolute;">
+                            <span  style="color: rgb(3, 3, 3);padding-top: 10px;"><b>{{innovation.domain}}</b></span><br>
+                            <span > Updated {{innovation.dateOfCreation | dateAgo}}</span>  <br>
+                            <span>{{ innovation.comments.length}} comments</span> <br>
+                            <span> {{ innovation.uploadedFiles.length }} files uploaded</span>  <br>
+                            </div>
+                            <div style="margin-top: 160px;">
+                                <mat-chip-list #chipList aria-label="doc selection">
+                                    <mat-chip *ngFor="let doc of innovation.uploadedFiles;" style="background-color: white;border: 1px blue solid;">
+                                        <mat-icon style="margin-right: 4px;">file_present</mat-icon>{{doc.fileName}}
+                                      <button mat-button (click)="viewdoc(doc.content)" style="margin-left: -12px;">
+                                        <a style="text-decoration: none; color: black;" [href]="fileUrl" 
+                                        download={{doc.fileName}}.{{doc.extension}}><mat-icon style="vertical-align: middle;padding-right: -15px;">download</mat-icon></a>
+                                      </button>
+                                    </mat-chip>
+                                </mat-chip-list>
+                            </div>
+                            <div style="margin-top: 14px;">
+                                <p >
+                                    {{innovation.innovationDesc}}
+                                </p>
+                            </div>
+                        </div>   
+                    </div>
+                </mat-tab>
+                <mat-tab label="Comments">
+                  <div class="comments-section">
+                      <div class="comments-form" style="padding-left: 50px;">
+                          <img style="border-radius: 50%; height: 50px; margin-top: 20px;margin-left: 20px;"
+                          src={{cookieValue.avatarUrl}} alt="avatar">
+                          <form class="example-form" >
+                              <mat-form-field style="float: left;margin-top: -50px;margin-left: 85px;width: 55%;">
+              
+                                  <textarea  matInput [(ngModel)]="comment" name="comment" placeholder="Add a Comment..."></textarea>
+                              </mat-form-field>
+                              <button (click)="addComment()" style="float: left;margin-top: -57px;margin-left: 10px;"
+                                  mat-icon-button>
+                                  <mat-icon>send</mat-icon>
+                              </button>
+                          </form>
+                      </div>
+                      <hr style="width: 1px;">
+                      <div style="background-color: lightgoldenrodyellow;width: 50%;margin-left: 20%;height: 7cm;">
+                          <div *ngFor="let one of allComments.reverse()"
+                              class="number">
+                              <span style="margin-left: 0px;font-weight: 600;">{{one.commentator_name}} </span>
+                              <span style="color: gray;margin-left: 10px;">{{one.dateOfComment | dateAgo}}</span><br>
+                              <span style="margin-left: 2px;font-weight: 400;">{{one.comment_data}}</span>
+                              <p></p>
+                              <mat-divider></mat-divider>
+                          </div>
+                      </div>
+                  </div>
+                </mat-tab>
+                <mat-tab label="Proposals" >
+                    <div class="proposals">
+                      <span *ngIf="allProposals.length==0" style="margin-left: 40%;">No Proposals yet </span>
+                      <div *ngFor="let proposal of allProposals;let i=index" style="margin-top: 10px; margin-bottom: 10px;">
+                          <mat-card (click)="onviewProposal(proposal.proposalId,i+1)" class="example-card" style="box-shadow: 5px 10px 30px gray;width: 70%;margin:auto; cursor:pointer">
+                              <mat-card-content>
+                                <div id="images">
+                                  <img style="float: left;width: 130px;margin-left: 10px ;border-radius: 10px;margin-top: 22px;height: 90px;" mat-card-image src={{proposal.coverImage.content}} alt="Proposal cover photo">
+                                  <h2 id="innovationName" style="margin-left: 170px;">{{ proposal.proposalTitle }}</h2>
+                                  <div style="margin-top: 10px;margin-left: 170px;">
+                                      <!-- <button mat-button style="float: right;" ><mat-icon>visibility</mat-icon></button> -->
+                                    <span style="color: rgb(3, 3, 3);padding-top: 10px;"><b>{{proposal.expertName}}</b></span><br>
+                                    <span > Updated {{proposal.dateOfCreation | dateAgo}}</span>  <br>
+                                    <span> {{ proposal.attachment.length }} files uploaded</span>  <br>
+                                  </div>       
+                                </div>
+                              </mat-card-content>
+                          </mat-card>
+                        </div>  
+                        <div *ngIf="allProposals.length>0 && page < totalPages-1">
+                          <button style="margin-left: 40%;" mat-button color="primary" (click)="addMore()">+ show more</button>
+                        </div>  
+                    </div>
+                </mat-tab>
+              </mat-tab-group>
+        </div>
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+        <button mat-button mat-dialog-close>Cancel</button>
+      </mat-dialog-actions>

@@ -1,0 +1,28 @@
+.main{
+    margin-left: 20%;
+    margin-right: 20%;
+    margin-top: 1%;
+    margin-bottom: 5%;
+}
+.cover-image{
+    float: right;
+    margin-top: -8%;
+    padding-right: 0%;
+    padding-top: 20px;
+}
+.comments-section {
+    /* max-height: 2cm; */
+    padding-left: 10%;
+    padding-right: 10%;
+}
+.actions{
+    justify-content: flex-end;
+    display: flex;
+}
+.inner{
+    margin-left: 30px;
+    width: 85%;
+}
+::ng-deep .mat-tab-label{
+    width: 50%;
+}

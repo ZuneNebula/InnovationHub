@@ -1,0 +1,14 @@
+<div style="width: 500px;padding: 0;">
+    <mat-icon mat-dialog-close style="float: right;color: gray;">cancel</mat-icon>
+    <div style="border: 1px solid red;width: 100px;margin-left: 38%;height: 100px;border-radius: 50%;">
+        <mat-icon style="font-size: 100px;color: red;">delete_forever</mat-icon>
+    </div>
+    <h2 style="margin-left: 180px; font-weight: 700;color: gray;">Are you Sure?</h2>
+    <h2 style="margin-left: 50px;">The proposal "{{proposalData.proposalTitle}}" will be deleted permanently</h2>
+
+    <mat-card-actions>
+        <button mat-button style="float: left;width: 50%;background: red;margin-left: -10px;margin-bottom: -185px; color: white;" (click)="delete(proposalData.proposalId)">Yes</button>
+        <button mat-dialog-close mat-button style="float: right;width: 50%;background-color: green;margin-right: -10px;">No</button>
+    </mat-card-actions>
+    
+</div>

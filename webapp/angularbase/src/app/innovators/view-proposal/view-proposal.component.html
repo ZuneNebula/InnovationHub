@@ -1,0 +1,89 @@
+<div class="main" >
+    <div class="innovation-display" style="margin-top: 4%;" *ngIf="currentInnovation">
+        <h2>Innovation:  {{currentInnovation.innovationName}} </h2>
+        <img *ngIf="currentInnovation.coverPhoto.content" mat-card-image src={{currentInnovation.coverPhoto.content}}
+            style="float: right ;border-radius: 10px;width: 250px;height: 150px;" alt="Innovation cover photo">
+        <img *ngIf="!currentInnovation.coverPhoto.content" style="float: right ;border-radius: 10px;width: 250px;height: 150px;" mat-card-image mat-card-image 
+            src="assets/default_image.jpg" alt="Innovation cover photo">
+            
+        <div >
+            <span  style="color: rgb(3, 3, 3);padding-top: 10px;"><b>{{currentInnovation.domain}}</b></span><br>
+            <span > Updated {{currentInnovation.dateOfCreation | dateAgo}}</span>  <br>
+            <span>{{ currentInnovation.comments.length}} comments</span> <br>
+            <span> {{ currentInnovation.uploadedFiles.length }} files uploaded</span>  <br>
+            <p style="margin-top: 5%;margin-bottom: 8%;"> {{currentInnovation.innovationDesc}} </p>
+        </div>
+    </div>
+    <hr width="100%" height="2px">
+    
+    <mat-tab-group class="proposalView" animationDuration="0ms" >
+        <mat-tab label="Proposal Details" >
+            <h2 style="padding-top: 10px;">{{selectedProposal.proposalTitle}}</h2>
+            <div class="cover-image" fxLayout="row wrap">
+                <img style="border-radius: 10px;width: 250px;height: 150px;margin-right: 10%" src={{selectedProposal.coverImage.content}} alt="">
+            </div>
+            <div class="proposal-details">
+                <span style="font-weight: 800;font-size: medium;"> {{selectedProposal.expertName}}</span><br>
+                <span>Updated {{selectedProposal.dateOfCreation | dateAgo}}</span><br>
+                <span> {{selectedProposal.domain}}</span><br>
+                <span> {{selectedProposal.statusOfProposal}} </span>
+            </div>
+            <div style="margin-top: 20px;">
+                <mat-chip-list #chipList aria-label="doc selection">
+                    <mat-chip *ngFor="let doc of selectedProposal.attachment;" style="background-color: white;border: 1px blue solid;">
+                        <mat-icon style="margin-right: 4px;">file_present</mat-icon>{{doc.fileName}}
+                    <button mat-button (click)="viewdoc(doc.content)" style="margin-left: -12px;">
+                        <a style="text-decoration: none; color: black;" [href]="fileUrl" 
+                        download={{doc.fileName}}.{{doc.extension}}><mat-icon style="vertical-align: middle;padding-right: -15px;">download</mat-icon></a>
+                    </button>
+                    </mat-chip>
+                </mat-chip-list>
+            </div>
+            <p style="margin-top: 50px;font-weight: 600;"> {{selectedProposal.proposalDescription}} </p>
+            <div class="actions" >
+                <div class="accepted" *ngIf="selectedProposal.statusOfProposal=='accepted'">
+                    <span>Accepted<mat-icon style="color: green;vertical-align: middle;margin-left: 5px;margin-right: 10px;">check_circle</mat-icon></span>
+                    <!-- <button mat-flat-button color="warn" (click)="decline()">Decline</button> -->
+                </div>
+                <div class="declined" *ngIf="selectedProposal.statusOfProposal=='declined'">
+                    <span>Declined<mat-icon style="color: red;vertical-align: middle;margin-left: 5px;margin-right: 10px;">not_interested</mat-icon></span>
+                    <!-- <button mat-flat-button color="primary" (click)="accept()">Accept</button> -->
+                </div>
+                <div class="no-action" *ngIf="selectedProposal.statusOfProposal=='pending'">
+                    <button style="margin-right: 10px;" mat-stroked-button (click)="decline()">Decline</button>
+                    <button mat-flat-button color="primary" (click)="accept()">Accept</button>
+                </div>
+            </div>
+        </mat-tab>
+        <mat-tab label="Connect with Expert">
+            <div class="comments-section">
+                <div class="comments-form">
+                    <img style="border-radius: 50%; height: 50px; margin-top: 20px;margin-left: 20px;"
+                    src={{cookieValue.avatarUrl}} alt="avatar">
+                    <form class="example-form">
+                        <mat-form-field style="float: left;margin-top: -50px;margin-left: 85px;width: 75%;">
+                            <textarea matInput [(ngModel)]="comment" name="comment" placeholder="Add a Comment..."></textarea>
+                        </mat-form-field>
+                        <button (click)="addComment()" [disabled]="this.comment.length==0" style="float: right;margin-top: -57px;margin-right: 60px;"
+                            mat-icon-button>
+                            <mat-icon>send</mat-icon>
+                        </button>
+                    </form>
+                </div>
+                <div class="inner" >
+                    <div style="background-color: lightgoldenrodyellow;">
+                        <div *ngFor="let one of allPrivateComments">
+                            <img style="border-radius: 50%; height: 30px; padding-top: 4px;float: left;"
+                                src={{one.avatarUrl}} alt="avatar">
+                            <span style="margin-left: 10px;font-weight: 600;float: left;">{{one.commentator}} </span>
+                            <span style="color: gray;margin-left: 10px;">{{one.commentDate | dateAgo}}</span><br>
+                            <span style="margin-left:10px;font-weight: 400;">{{one.content}}</span>
+                            <p></p>
+                            <mat-divider></mat-divider>
+                        </div>
+                    </div>
+                </div>
+            </div> 
+        </mat-tab>
+    </mat-tab-group>
+</div>

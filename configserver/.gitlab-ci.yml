@@ -1,0 +1,6 @@
+.configserver-module:
+  variables:
+    MODULE: "configserver"
+  only:
+    changes:
+      - "configserver/**/*"

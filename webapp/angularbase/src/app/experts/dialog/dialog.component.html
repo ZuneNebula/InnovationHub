@@ -1,0 +1,211 @@
+<div style="width: 800px;height: 550px;padding: 0;">
+    <mat-tab-group style="width: 150%;margin-top: -3%;margin-left: -3%;;" color="accent" >
+        <mat-tab label="Proposal Details"> 
+            <div style="margin-left: 3%;">
+                <div style="float: right;width: 60%;margin-top: 2%;">
+                    <h1 style="font-weight: 700;text-align: center;">{{proposalToBeEdited.proposalTitle}}</h1>
+            
+                    <div style="height: 80px;width: 400px; margin-left: 50px;">
+                        <p matTooltip="description">{{proposalToBeEdited.proposalDescription}}</p>
+                    </div>
+            
+                    <div style="float: left;width: 40%;margin-left: 50px;">
+                        <h2 style="margin-bottom: 0;">Created</h2>
+                        <h3 style="color: purple;font-weight: 500;">{{proposalToBeEdited.dateOfCreation | dateAgoExpert}}</h3>
+            
+                        <h2 style="margin-bottom: 0;">Documents uploaded</h2>
+                        <h3 style="color: purple;font-weight: 500;">{{ proposalToBeEdited.attachment.length }} files</h3>
+                    </div>
+                    <div style="float: right;width: 40%;margin-right: 20px;">
+                        <h2 style="margin-bottom: 0;margin-left: 20px;">Status</h2>
+                        <mat-chip-list>
+                            <mat-chip [ngClass]="{
+                                'green' : proposalToBeEdited.statusOfProposal=='accepted',
+                                'red' : proposalToBeEdited.statusOfProposal=='pending'
+                             }" style="color: white;font-weight: 500;text-align: center;margin-left: 20px;">
+                                {{proposalToBeEdited.statusOfProposal}}</mat-chip>
+                        </mat-chip-list>
+            
+                        <h2 style="margin-top: 12px;text-align: center;margin-bottom: 0;">Innovation Name</h2>
+                        <h3 style="color: purple;font-weight: 500;margin-left: 22px;">{{innovation.innovationName}}</h3>
+                    </div>
+                    <br style="clear: both;" />
+                    <div>
+                        <hr style="width: 80%;">
+                        <h2 style="font-weight: 500;margin-left: 150px;">Attached Documents</h2>
+            
+                        <mat-chip-list style="float: left;margin-left: 5%;" #chipList aria-label="doc selection">
+                            <mat-chip *ngFor="let doc of proposalToBeEdited.attachment;" style="background-color: white;border: 1px rgb(25, 71, 31) solid;">
+                                <mat-icon style="margin-right: 4px;">file_present</mat-icon>{{doc.fileName}}
+                              <button mat-button (click)="viewdoc(doc.content)" style="margin-left: -12px;">
+                                <a style="text-decoration: none; color: black;" [href]="fileUrl" 
+                                download={{doc.fileName}}.{{doc.extension}}><mat-icon style="vertical-align: middle;padding-right: -15px;">download</mat-icon></a>
+                              </button>
+                            </mat-chip>
+                        </mat-chip-list>
+            
+                    </div>
+                </div>
+            
+                <img style="margin-top: 40px;height: 400px;width: 300px;box-shadow: 5px 10px 18px gray;"
+                    src={{proposalToBeEdited.coverImage.content}} onerror="this.src='assets/default.png'" alt="proposal image">
+            
+                <button color="accent" style="float: right;" mat-dialog-close mat-raised-button>CLOSE</button>
+            
+            </div>
+        </mat-tab>
+        <mat-tab label="Connect with Innovator"> 
+            <div style="margin-left: 5%;">
+                <div>
+                    <div>
+                        <img style="border-radius: 50%; height: 50px; margin-top: 20px;margin-left: 20px;"
+                            src={{cookieValue.avatarUrl}} alt="avatar">
+                        <form class="example-form">
+                            <mat-form-field style="float: left;margin-top: -50px;margin-left: 85px;width: 75%;">
+            
+                                <input matInput [(ngModel)]="comment" name="comment" placeholder="Add a Comment...">
+                            </mat-form-field>
+                            <button (click)="addComment()" style="float: right;margin-top: -57px;margin-right: 70px;"
+                                mat-icon-button>
+                                <mat-icon>send</mat-icon>
+                            </button>
+                        </form>
+                    </div>
+                    <br>
+                    <div style="margin-left: 2%;margin-right: 4%;width: 88%;">
+                        <cdk-virtual-scroll-viewport itemSize="72" class="container">
+                            <div style="background-color: rgb(253, 253, 209);padding-top: 1%;padding-left: 1%;"
+                                *cdkVirtualFor="let one of proposalToBeEdited.privateComments.reverse()" class="number">
+            
+                                <img style="border-radius: 50%; height: 30px;float: left;"
+                        src={{one.avatarUrl}} alt="avatar">
+                                <span style="margin-left: 10px;font-weight: 600;float: left;">{{one.commentator}} </span>
+                                <span style="color: gray;margin-left: 10px;">{{one.commentDate | dateAgoExpert}}</span><br>
+                                <span style="margin-left:10px;font-weight: 400;">{{one.content}}</span>
+                                <mat-divider></mat-divider>
+                            </div>
+                        </cdk-virtual-scroll-viewport>
+                    </div>
+            
+                </div>
+                <br>
+                <div>
+                    <button color="accent" style="float: right;margin-right: 0%;" mat-dialog-close
+                        mat-raised-button>CLOSE</button>
+                </div>
+            
+            </div>
+        </mat-tab>
+    </mat-tab-group>
+
+    
+
+
+
+</div>
+
+<!-- <mat-toolbar color="accent" style="width: 106%;margin-left: -25px;margin-top: -25px;height: 50px;float: left;">
+    <h1 style="margin-left: 5%;">{{headerText}}</h1>
+    <button mat-raised-button
+        style="background-color: lavender; margin-top: 5%;margin-left: 20%;color: black; box-shadow: 5px 10px 18px gray;"
+        (click)="changeContent()">{{buttonText}}</button>
+</mat-toolbar>
+
+<div *ngIf="!buttonFlag">
+    <div style="float: right;width: 60%;margin-top: 40px;">
+        <h1 style="font-weight: 700;text-align: center;">{{proposalToBeEdited.proposalTitle}}</h1>
+
+        <div style="height: 80px;width: 400px; margin-left: 50px;">
+            <p matTooltip="description">{{proposalToBeEdited.proposalDescription}}</p>
+        </div>
+
+        <div style="float: left;width: 40%;margin-left: 50px;">
+            <h2 style="margin-bottom: 0;">Created</h2>
+            <h3 style="color: purple;font-weight: 500;">{{proposalToBeEdited.dateOfCreation | dateAgoExpert}}</h3>
+
+            <h2 style="margin-bottom: 0;">Documents uploaded</h2>
+            <h3 style="color: purple;font-weight: 500;">{{ proposalToBeEdited.attachment.length }} files</h3>
+        </div>
+        <div style="float: right;width: 40%;margin-right: 20px;">
+            <h2 style="margin-bottom: 0;margin-left: 20px;">Status</h2>
+            <mat-chip-list>
+                <mat-chip [ngClass]="{
+                    'green' : proposalToBeEdited.statusOfProposal=='accepted',
+                    'red' : proposalToBeEdited.statusOfProposal=='pending'
+                 }" style="color: white;font-weight: 500;text-align: center;margin-left: 20px;">
+                    {{proposalToBeEdited.statusOfProposal}}</mat-chip>
+            </mat-chip-list>
+
+            <h2 style="margin-top: 12px;text-align: center;margin-bottom: 0;">Innovation Name</h2>
+            <h3 style="color: purple;font-weight: 500;margin-left: 22px;">{{innovation.innovationName}}</h3>
+        </div>
+        <br style="clear: both;" />
+        <div>
+            <hr style="width: 80%;">
+            <h2 style="font-weight: 500;margin-left: 150px;">Attached Documents</h2>
+
+            <mat-chip-list style="float: left;margin-left: 5%;" #chipList aria-label="doc selection">
+                <mat-chip *ngFor="let doc of proposalToBeEdited.attachment;" style="background-color: white;border: 1px rgb(25, 71, 31) solid;">
+                    <mat-icon style="margin-right: 4px;">file_present</mat-icon>{{doc.fileName}}
+                  <button mat-button (click)="viewdoc(doc.content)" style="margin-left: -12px;">
+                    <a style="text-decoration: none; color: black;" [href]="fileUrl" 
+                    download={{doc.fileName}}.{{doc.extension}}><mat-icon style="vertical-align: middle;padding-right: -15px;">download</mat-icon></a>
+                  </button>
+                </mat-chip>
+            </mat-chip-list>
+
+        </div>
+
+
+
+    </div>
+
+    <img style="margin-top: 40px;height: 400px;width: 300px;box-shadow: 5px 10px 18px gray;"
+        src={{proposalToBeEdited.coverImage.content}} onerror="this.src='assets/default.png'" alt="proposal image">
+
+    <button color="accent" style="float: right;" mat-dialog-close mat-raised-button>CLOSE</button>
+
+</div>
+
+
+<div *ngIf="buttonFlag">
+    <div>
+        <div>
+            <img style="border-radius: 50%; height: 50px; margin-top: 20px;margin-left: 20px;"
+                src={{cookieValue.avatarUrl}} alt="avatar">
+            <form class="example-form">
+                <mat-form-field style="float: left;margin-top: -50px;margin-left: 85px;width: 75%;">
+
+                    <input matInput [(ngModel)]="comment" name="comment" placeholder="Add a Comment...">
+                </mat-form-field>
+                <button (click)="addComment()" style="float: right;margin-top: -57px;margin-right: 70px;"
+                    mat-icon-button>
+                    <mat-icon>send</mat-icon>
+                </button>
+            </form>
+        </div>
+        <br>
+        <div style="margin-left: 2%;margin-right: 4%;width: 88%;">
+            <cdk-virtual-scroll-viewport itemSize="70" class="container">
+                <div style="background-color: rgb(253, 253, 209);"
+                    *cdkVirtualFor="let one of proposalToBeEdited.privateComments.reverse()" class="number">
+
+                    <img style="border-radius: 50%; height: 30px; padding-top: 10px;float: left;"
+                        src={{one.avatarUrl}} alt="avatar">
+                    <span style="margin-left: 10px;font-weight: 600;float: left;">{{one.commentator}} </span>
+                    <span style="color: gray;margin-left: 10px;">{{one.commentDate | dateAgoExpert}}</span><br>
+                    <span style="margin-left:10px;font-weight: 400;">{{one.content}}</span>
+                    <mat-divider></mat-divider>
+                </div>
+
+            </cdk-virtual-scroll-viewport>
+        </div>
+
+    </div>
+    <br>
+    <div>
+        <button color="accent" style="float: right;margin-right: 0%;" mat-dialog-close
+            mat-raised-button>CLOSE</button>
+    </div>
+
+</div> -->

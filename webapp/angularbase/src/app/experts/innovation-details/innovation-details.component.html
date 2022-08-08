@@ -1,0 +1,100 @@
+
+<div  style="width: 520px;">
+    
+    <mat-tab-group animationDuration="0ms" style="margin-top: -20px;">
+    
+        <mat-tab label="Details">
+            <div style="width: 500px;overflow-y: hidden !important;">
+                
+                
+    
+                <img style="height: 90px;width: 90px;border-radius: 50%;margin-top: 20px;margin-left: 2px;"
+                    src={{innovation.coverPhoto.content}} onerror="this.src='assets/default.png'" alt="innovation image">
+                <p style="margin-left: px;">Innovator : {{innovation.name}}</p>
+    
+    
+                <h2 style="float: right;margin-right: 150px;margin-top: -120px;font-weight: 700;">
+                    {{innovation.innovationName}}</h2>
+    
+    
+    
+                <div style="margin-top: -10px;">
+                    
+                    <span style="margin-left: px;"> Updated {{innovation.dateOfCreation | dateAgoExpert}}</span> <br>
+                    <span style="margin-left: px;">{{ innovation.comments.length-1}} comments</span> <br>
+                    <span style="margin-left: px;"> {{ innovation.uploadedFiles.length }} files uploaded</span> <br>
+    
+                </div>
+                <div>
+                    <mat-chip matTooltip="status" style="background-color: cornflowerblue;margin-left: 0px;">{{innovation.status}}</mat-chip>
+                </div>
+    
+    
+    
+                <p style="width: 300px;float:right;justify-content: right;margin-right: 5px;margin-top: -170px;">
+                    {{innovation.innovationDesc}}</p>
+    
+                <hr>
+                <br>
+                <br>
+                <hr>
+                <h2 style="float: right;margin-right: 150px;margin-top: -50px;">Documents uploaded</h2>
+    
+                <br>
+                    <mat-chip-list style="float: left;margin-left: 0%;" #chipList aria-label="doc selection">
+                        <mat-chip *ngFor="let doc of innovation.uploadedFiles;" style="background-color: white;border: 1px rgb(25, 71, 31) solid;">
+                            <mat-icon style="margin-right: 1%;">file_present</mat-icon>{{doc.fileName}}
+                          <button mat-button (click)="viewdoc(doc.content)" style="margin-right: 10%;">
+                            <a style="text-decoration: none; color: black;" [href]="fileUrl" 
+                            download={{doc.fileName}}.{{doc.extension}}><mat-icon style="vertical-align: middle;padding-right: -15px;">download</mat-icon></a>
+                          </button>
+                        </mat-chip>
+                    </mat-chip-list>
+                    <br>
+                
+    
+    
+    
+            </div>
+        </mat-tab>
+        <mat-tab label="Comments">
+            <div>
+                <img style="border-radius: 50%; height: 50px; margin-top: 20px;margin-left: 20px;"
+                    src={{cookieValue.avatarUrl}} alt="avatar">
+                <form class="example-form">
+                    <mat-form-field style="float: left;margin-top: -50px;margin-left: 85px;width: 80%;">
+    
+                        <input matInput [(ngModel)]="comment" name="comment" placeholder="Add a Comment...">
+                    </mat-form-field>
+                    <button (click)="addComment($event)" style="float: left;margin-top: -57px;margin-left: 100%;"
+                        mat-icon-button>
+                        <mat-icon>send</mat-icon>
+                    </button>
+                </form>
+            </div>
+    
+    
+            
+    
+            <!-- <hr> -->
+            <br>
+            <div style="width: 100%;">
+                <cdk-virtual-scroll-viewport itemSize="72" class="container">
+                    <div style="background-color: rgb(253, 253, 209);"
+                        *cdkVirtualFor="let one of innovation.comments.reverse()" class="number">
+                        <span style="float: right;margin-right: 215px;margin-top: 5px;">{{one.dateOfComment |
+                            dateAgoExpert}}</span>
+                        <h3 style="margin-left: 20px;font-weight: 600;">{{one.commentator_name}}</h3>
+                        <p style="margin-left: 20px;font-weight: 400;margin-top: -15px;">{{one.comment_data}}</p>
+                        <mat-divider></mat-divider>
+                    </div>
+    
+                </cdk-virtual-scroll-viewport>
+            </div>
+        </mat-tab>
+       
+    </mat-tab-group>
+    
+    <button mat-raised-button mat-dialog-close color="accent" style="float: right;margin-right: 5%;">CLOSE</button>
+</div>
+ 

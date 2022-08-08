@@ -1,0 +1,89 @@
+
+
+<div>
+  <h1 style="font-weight: 700;float: left;margin-left: 20%;margin-top: 25px;">Proposals</h1>
+
+  <div class="searchbar" >
+    <mat-form-field appearance="outline" class="searchbar">
+      <mat-label>Search</mat-label>
+      <input matInput [(ngModel)]="search_text" (ngModelChange)="search()">
+      <mat-icon matSuffix>search</mat-icon>
+    </mat-form-field>
+    <button mat-button [matMenuTriggerFor]="filter">
+      <mat-icon aria-hidden="false" aria-label="Example home icon">filter_list</mat-icon>
+    </button>
+    <button mat-button *ngIf="!setRecentFilter" (click)="clearFilters()">Clear Filters</button>
+    <mat-menu #filter="matMenu">
+      <button mat-menu-item [matMenuTriggerFor]="status">Status</button>
+      <button mat-menu-item (click)="recentFilter()">Oldest first</button>
+    </mat-menu>
+    <mat-menu #status="matMenu">
+      <div *ngFor="let s of allStatus">
+        <button mat-menu-item (click)="statusFilter(s.name)">{{s.name}}</button>
+      </div>
+    </mat-menu>
+  </div>
+
+  <hr
+    style="width: 67%;float: left;margin-left: 15%;height: 3px;background-color: rgb(253, 49, 151);border: none;margin-top: 0;">
+
+    
+  
+
+  <h3 fxLayout="row-wrap" style="float: right;margin-right: 20%;">Displaying {{proposals.length}} results out of
+    {{results}}</h3>
+  <br><br>
+  <mat-spinner style="margin-left: 50%;" *ngIf="!wait"></mat-spinner>
+
+  <div id="main" *ngIf="wait">
+    <div fxLayout="row wrap" fxLayoutGap="16px grid">
+      <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="50%" fxFlex.lg="33%" *ngFor="let one of proposals">
+        <mat-card class="example-card background primary" style="height: 9cm;">
+          <mat-card-content>
+            <div id="image">
+              <img mat-card-image mat-card-image src={{one.coverImage.content}} onerror="this.src='assets/default.png'"
+                alt="Innovation cover photo">
+
+              <h2 id="innovationName">{{ one.proposalTitle }}</h2>
+
+              <div class="metadata" style="margin-top: 50px;position: absolute;">
+                <span style="color: rgb(3, 3, 3);padding-top: 10px;"><b>{{one.domain}}</b></span><br>
+                <span> Updated {{one.dateOfCreation | dateAgoExpert}}</span> <br>
+                <span> {{ one.attachment.length }} files uploaded</span> <br>
+
+                <p>
+                  {{one.proposalDescription}}
+                </p>
+              </div>
+            </div>
+          </mat-card-content>
+          <mat-card-actions>
+
+
+            <button mat-button (click)="delete(one.proposalId)">
+              <mat-icon>delete</mat-icon>
+            </button>
+
+            <button style="border: none;margin-left: 15px;" routerLink="edit/{{one.proposalId}}">
+              <mat-icon style="color: black;">edit</mat-icon>
+            </button>
+
+            <button style="margin-left: 15px;" mat-button (click)="viewProposalById(one.proposalId)">
+              <mat-icon>visibility</mat-icon>
+            </button>
+
+          </mat-card-actions>
+
+        </mat-card>
+      </div>
+    </div>
+  </div>
+  <div class="pagination">
+    <div *ngIf="page < totalPages-1 " id="add-more">
+      <button mat-stroked-button color="primary" (click)="addMore()">Show more<mat-icon>expand_more</mat-icon></button>
+    </div>
+    <div *ngIf="page == totalPages-1" id="folks">
+      <!-- <h2>That's all folks</h2> -->
+    </div>
+  </div>
+</div>
